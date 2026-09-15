@@ -1,0 +1,413 @@
+{
+  "generated_at": "2026-09-11T09:56:55.648275+00:00",
+  "environment": "pandas",
+  "note": "End-to-end pandas pipeline (mirrors the Databricks architecture). MTTR is per-batch compute latency; a Spark deployment reports end-to-end micro-batch latency. Precision and FPR use clean-batch trials. Numbers are computed from the run, not hand-entered.",
+  "config": {
+    "seed": 42,
+    "batches": 270
+  },
+  "scorecard": {
+    "faults_injected": 225,
+    "clean_batches": 45,
+    "batches_processed": 270,
+    "detection_rate": 92.0,
+    "precision": 100.0,
+    "false_positive_rate": 0.0,
+    "auto_heal_success_rate": 75.8,
+    "escalation_rate": 24.2,
+    "avg_mttr_ms": 1.366,
+    "data_preservation_rate": 100.0,
+    "silent_data_loss": 0,
+    "unaccounted_events": 0,
+    "sensing_reliability": 100.0
+  },
+  "taxonomy": {
+    "healthy": 63,
+    "fix": 135,
+    "quarantine": 22,
+    "escalate": 50
+  },
+  "per_fault": [
+    {
+      "fault": "DUPLICATE",
+      "injected": 25,
+      "detection_rate": 100.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 1.918,
+      "class": "fix"
+    },
+    {
+      "fault": "NULL_FLOOD",
+      "injected": 25,
+      "detection_rate": 88.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 1.177,
+      "class": "quarantine"
+    },
+    {
+      "fault": "GARBAGE",
+      "injected": 25,
+      "detection_rate": 100.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 2.283,
+      "class": "fix"
+    },
+    {
+      "fault": "TYPE_FLIP",
+      "injected": 25,
+      "detection_rate": 80.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 1.129,
+      "class": "fix"
+    },
+    {
+      "fault": "SCHEMA_ADD",
+      "injected": 25,
+      "detection_rate": 84.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 0.986,
+      "class": "fix"
+    },
+    {
+      "fault": "SCHEMA_DROP",
+      "injected": 25,
+      "detection_rate": 76.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 0.908,
+      "class": "fix"
+    },
+    {
+      "fault": "LATE_DATA",
+      "injected": 25,
+      "detection_rate": 100.0,
+      "heal_rate": 100.0,
+      "escalation_rate": 0.0,
+      "avg_mttr_ms": 0.918,
+      "class": "fix"
+    },
+    {
+      "fault": "VOLUME_DROP",
+      "injected": 25,
+      "detection_rate": 100.0,
+      "heal_rate": 0.0,
+      "escalation_rate": 100.0,
+      "avg_mttr_ms": 0.0,
+      "class": "escalate"
+    },
+    {
+      "fault": "VOLUME_SPIKE",
+      "injected": 25,
+      "detection_rate": 100.0,
+      "heal_rate": 0.0,
+      "escalation_rate": 100.0,
+      "avg_mttr_ms": 0.0,
+      "class": "escalate"
+    }
+  ],
+  "rule_effectiveness": [
+    {
+      "rule": "DUPLICATES",
+      "action": "dedup",
+      "matched": 25,
+      "resolved": 25,
+      "effectiveness": 100.0
+    },
+    {
+      "rule": "EMPTY_BATCH",
+      "action": "escalate",
+      "matched": 25,
+      "resolved": 0,
+      "effectiveness": 0.0
+    },
+    {
+      "rule": "VOLUME_SPIKE",
+      "action": "escalate",
+      "matched": 25,
+      "resolved": 0,
+      "effectiveness": 0.0
+    },
+    {
+      "rule": "SCHEMA_DRIFT",
+      "action": "absorb_schema",
+      "matched": 41,
+      "resolved": 41,
+      "effectiveness": 100.0
+    },
+    {
+      "rule": "SCHEMA_DRIFT",
+      "action": "absorb_schema",
+      "matched": 19,
+      "resolved": 19,
+      "effectiveness": 100.0
+    },
+    {
+      "rule": "NULL_FLOOD",
+      "action": "quarantine_correct",
+      "matched": 22,
+      "resolved": 22,
+      "effectiveness": 100.0
+    },
+    {
+      "rule": "RANGE_VIOLATION",
+      "action": "clamp",
+      "matched": 25,
+      "resolved": 25,
+      "effectiveness": 100.0
+    },
+    {
+      "rule": "LATE_DATA",
+      "action": "flag_backfill",
+      "matched": 25,
+      "resolved": 25,
+      "effectiveness": 100.0
+    }
+  ],
+  "conservation": {
+    "input_rows": 18181,
+    "distinct_events": 17300,
+    "duplicates_collapsed": 881,
+    "silver_events": 9196,
+    "deadletter_events": 8104,
+    "unaccounted": 0
+  },
+  "sensing_failure_demo": {
+    "batches": 8,
+    "verdicts": [
+      "AMBER",
+      "AMBER",
+      "AMBER",
+      "AMBER",
+      "AMBER",
+      "AMBER",
+      "AMBER",
+      "AMBER"
+    ],
+    "green": 0,
+    "incidents_raised": 8
+  },
+  "learning": {
+    "novel_fault": "DISTRIBUTION_DRIFT",
+    "seed_rules": 8,
+    "rules_before": 8,
+    "rules_after": 9,
+    "approval_after_occurrence": 3,
+    "llm_calls_before": 3,
+    "llm_calls_after": 0,
+    "occurrences": [
+      {
+        "n": 1,
+        "rules_active": 8,
+        "matched_rule": false,
+        "llm_called": true,
+        "psi": 12.515,
+        "cum_llm_calls": 1,
+        "outcome": "LLM proposes rule -> human approves"
+      },
+      {
+        "n": 2,
+        "rules_active": 8,
+        "matched_rule": false,
+        "llm_called": true,
+        "psi": 16.349,
+        "cum_llm_calls": 2,
+        "outcome": "LLM proposes rule -> human approves"
+      },
+      {
+        "n": 3,
+        "rules_active": 8,
+        "matched_rule": false,
+        "llm_called": true,
+        "psi": 13.327,
+        "cum_llm_calls": 3,
+        "outcome": "LLM proposes rule -> human approves"
+      },
+      {
+        "n": 4,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 10.811,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 5,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 16.349,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 6,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 11.057,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 7,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 13.299,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 8,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 13.69,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 9,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 15.459,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 10,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 15.342,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 11,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 15.604,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      },
+      {
+        "n": 12,
+        "rules_active": 9,
+        "matched_rule": true,
+        "llm_called": false,
+        "psi": 15.604,
+        "cum_llm_calls": 3,
+        "outcome": "deterministic (no LLM)"
+      }
+    ],
+    "llm_usage_series": [
+      {
+        "n": 1,
+        "llm_pct": 100
+      },
+      {
+        "n": 2,
+        "llm_pct": 100
+      },
+      {
+        "n": 3,
+        "llm_pct": 100
+      },
+      {
+        "n": 4,
+        "llm_pct": 0
+      },
+      {
+        "n": 5,
+        "llm_pct": 0
+      },
+      {
+        "n": 6,
+        "llm_pct": 0
+      },
+      {
+        "n": 7,
+        "llm_pct": 0
+      },
+      {
+        "n": 8,
+        "llm_pct": 0
+      },
+      {
+        "n": 9,
+        "llm_pct": 0
+      },
+      {
+        "n": 10,
+        "llm_pct": 0
+      },
+      {
+        "n": 11,
+        "llm_pct": 0
+      },
+      {
+        "n": 12,
+        "llm_pct": 0
+      }
+    ],
+    "cum_llm_series": [
+      {
+        "n": 1,
+        "cum": 1
+      },
+      {
+        "n": 2,
+        "cum": 2
+      },
+      {
+        "n": 3,
+        "cum": 3
+      },
+      {
+        "n": 4,
+        "cum": 3
+      },
+      {
+        "n": 5,
+        "cum": 3
+      },
+      {
+        "n": 6,
+        "cum": 3
+      },
+      {
+        "n": 7,
+        "cum": 3
+      },
+      {
+        "n": 8,
+        "cum": 3
+      },
+      {
+        "n": 9,
+        "cum": 3
+      },
+      {
+        "n": 10,
+        "cum": 3
+      },
+      {
+        "n": 11,
+        "cum": 3
+      },
+      {
+        "n": 12,
+        "cum": 3
+      }
+    ]
+  }
+}
